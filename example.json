@@ -1,0 +1,62 @@
+{
+  "<IP adress>": [
+    {
+      "<directory name>": [
+        {
+          "<sub-directory name>": [
+            "<file name>",
+            "<file name>",
+            "<file name>"
+          ]
+        },
+        {
+          "<sub-directory name>": [
+            "<file name>",
+            "<file name>",
+            "<file name>"
+          ]
+        },
+        "<file name>",
+        "<file name>",
+        "<file name>"
+      ]
+    },
+    {
+      "<directory name>": [
+        "<file name>",
+        "<file name>",
+        "<file name>"
+      ]
+    }
+  ],
+  "34.8.32.234": [
+    {
+      "SvnRep": [
+        {
+          "ADV-H5-New": [
+            "README.txt",
+            "VisualSVN.lck",
+            "hooks-env.tmpl"
+          ]
+        },
+        {
+          "AT-APP": [
+            "README.txt",
+            "VisualSVN.lck",
+            "hooks-env.tmpl"
+          ]
+        },
+        "README.txt",
+        "VisualSVN.lck",
+        "hooks-env.tmpl"
+      ]
+    },
+    {
+      "www": [
+        "README.txt",
+        "VisualSVN.lck",
+        "hooks-env.tmpl"
+      ]
+    }
+  ]
+}
