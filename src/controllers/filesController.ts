@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { fetchExternalData } from '../services/filesService';
-import { getCachedData, setCachedData } from '../services/cacheService';
+import { getCachedData } from '../services/cacheService';
 
 // Cache key for storing transformed file data
-const CACHE_KEY = 'transformedFiles';
+export const CACHE_KEY = 'transformedFiles';
 
 type FileOrDirectory = string | { [key: string]: FileOrDirectory[] };
 export type FileStructure = {
@@ -17,7 +17,6 @@ export function transformData(data: { items: { fileUrl: string }[] }): FileStruc
   data.items.forEach(({ fileUrl }) => {
     const url = new URL(fileUrl);
     const ip = url.hostname;
-    // Split the pathname and remove empty parts
     const pathParts = url.pathname.split('/').filter(Boolean);
 
     // Skip if there are no path parts
@@ -54,7 +53,6 @@ export function transformData(data: { items: { fileUrl: string }[] }): FileStruc
   return result;
 }
 
-// Function to format the output
 function formatOutput(structure: FileStructure): FileStructure {
   const formatted: FileStructure = {};
 
@@ -84,26 +82,25 @@ function formatLevel(items: FileOrDirectory[]): FileOrDirectory[] {
   // Return directories first, then files
   return [...directories, ...files];
 }
+export async function initializeFileData() {
+  const externalData = await fetchExternalData();
+  if (!externalData || !externalData.items || !Array.isArray(externalData.items)) {
+    throw new Error('Invalid data received from external API');
+  }
+  let transformedData = transformData(externalData);
+  transformedData = formatOutput(transformedData);
+  return transformedData;
+}
 
 // Main function to handle file retrieval
 export const getFiles = async (req: Request, res: Response) => {
   try {
-    // Try to get cached data
-    let transformedData = getCachedData(CACHE_KEY) as FileStructure | null;
+    const transformedData = getCachedData(CACHE_KEY) as FileStructure | null;
 
     if (!transformedData) {
-      // If no cached data, fetch and transform new data
-      const externalData = await fetchExternalData();
-      if (!externalData || !externalData.items || !Array.isArray(externalData.items)) {
-        throw new Error('Invalid data received from external API');
-      }
-      transformedData = transformData(externalData);
-      transformedData = formatOutput(transformedData);
-      // Cache the transformed data
-      setCachedData(CACHE_KEY, transformedData);
+      throw new Error('Cache is empty. Server might not have initialized properly.');
     }
 
-    // Send the response
     res.json(transformedData);
   } catch (error) {
     console.error('Error in getFiles:', error);
