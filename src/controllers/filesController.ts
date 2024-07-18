@@ -7,7 +7,12 @@ import { FileStructure } from '../types/fileTypes';
 // Cache key for storing transformed file data
 export const CACHE_KEY = 'transformedFiles';
 
-// Fetching data from an external API, transforming, and formatting
+/**
+ * Fetches data from an external API, transforms it, and formats the result.
+ * 
+ * @returns {Promise<FileStructure>} A promise that resolves to the transformed and formatted file structure.
+ * @throws {Error} If the data received from the external API is invalid.
+ */
 export async function initializeFileData() {
   const externalData = await fetchExternalData();
   if (!externalData || !externalData.items || !Array.isArray(externalData.items)) {
@@ -18,7 +23,14 @@ export async function initializeFileData() {
   return transformedData;
 }
 
-// Main function to handle file retrieval
+/**
+ * Main function to handle file retrieval.
+ * Retrieves transformed file data from cache and sends it as a JSON response.
+ * 
+ * @param {Request} _req - The Express request object (unused).
+ * @param {Response} res - The Express response object.
+ * @returns {Promise<void>}
+ */
 export const getFiles = async (_req: Request, res: Response) => {
   try {
     const transformedData = getCachedData(CACHE_KEY) as FileStructure | null;

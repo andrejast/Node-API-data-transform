@@ -1,6 +1,13 @@
 import { FileStructure, FileOrDirectory } from '../types/fileTypes';
 
-// Transform raw data into structured file system
+/**
+ * Transforms raw data into a structured file system.
+ * 
+ * @param {Object} data - The raw data containing file URLs.
+ * @param {Array} data.items - An array of objects, each containing a fileUrl.
+ * @param {string} data.items[].fileUrl - The URL of a file or directory.
+ * @returns {FileStructure} A structured representation of the file system.
+ */
 export function transformData(data: { items: { fileUrl: string }[] }): FileStructure {
   const result: FileStructure = {};
 
@@ -43,7 +50,12 @@ export function transformData(data: { items: { fileUrl: string }[] }): FileStruc
   return result;
 }
 
-// Formats the output of the file structure by applying formatting to each IP's contents.
+/**
+ * Formats the output of the file structure by applying formatting to each IP's contents.
+ * 
+ * @param {FileStructure} structure - The unformatted file structure.
+ * @returns {FileStructure} The formatted file structure.
+ */
 export function formatOutput(structure: FileStructure): FileStructure {
   const formatted: FileStructure = {};
 
@@ -54,7 +66,12 @@ export function formatOutput(structure: FileStructure): FileStructure {
   return formatted;
 }
 
-// Format each level of the file structure
+/**
+ * Formats each level of the file structure.
+ * 
+ * @param {FileOrDirectory[]} items - The items to format at the current level.
+ * @returns {FileOrDirectory[]} The formatted items, with directories first, then files.
+ */
 function formatLevel(items: FileOrDirectory[]): FileOrDirectory[] {
   const directories: { [key: string]: FileOrDirectory[] }[] = [];
   const files: string[] = [];
