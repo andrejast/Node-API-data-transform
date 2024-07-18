@@ -1,6 +1,6 @@
-import express from 'express';
-import { getFiles } from '../controllers/filesController';
+import express from "express";
+import { getFiles } from "../controllers/filesController";
 
-export const router = express.Router();
+export const filesRouter = express.Router();
 
-router.get('/files', getFiles);
+filesRouter.get("/", getFiles);
