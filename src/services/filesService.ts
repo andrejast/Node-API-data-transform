@@ -1,11 +1,9 @@
 import axios from 'axios';
+import { ExternalApiResponse } from '../types/fileTypes';
 
 const EXTERNAL_API_URL = 'https://rest-test-eight.vercel.app/api/test';
 
-interface ExternalApiResponse {
-  items: { fileUrl: string }[];
-}
-
+// Fetch data from the external API
 export async function fetchExternalData(): Promise<ExternalApiResponse> {
   try {
     const response = await axios.get(EXTERNAL_API_URL);
@@ -16,7 +14,3 @@ export async function fetchExternalData(): Promise<ExternalApiResponse> {
   }
 }
 
-type SubDirectory = { [key: string]: string[] };
-type DirectoryContent = (string | SubDirectory)[];
-type Directory = { [key: string]: DirectoryContent };
-export type FileStructure = { [ip: string]: Directory[] };

@@ -12,19 +12,24 @@ app.use(cors());
 app.use(express.json());  
 app.use(express.urlencoded({ extended: true }));
 
+// Mount the API routes
 app.use('/api', filesRouter);
 
+// Immediately Invoked Function Expression (IIFE) to use async/await at the top level
 (async () => {
-    try {
-        console.log("Initializing cache...");
-        await initializeCache(CACHE_KEY, initializeFileData);
-        console.log("Cache initialized successfully!");
+  try {
+      console.log("Initializing cache...");
+      // Initialize the cache with the file data
+      await initializeCache(CACHE_KEY, initializeFileData);
+      console.log("Cache initialized successfully!");
 
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
-        });
-    } catch (error) {
-        console.error("Failed to initialize cache:", error);
-        process.exit(1);
-    }
+      // Start the server
+      app.listen(PORT, () => {
+          console.log(`Server is running on port ${PORT}`);
+      });
+  } catch (error) {
+      console.error("Failed to initialize cache:", error);
+      // Exit the process with an error code if initialization fails
+      process.exit(1);
+  }
 })();
