@@ -10,6 +10,7 @@ export interface ExternalApiResponse {
   items: { fileUrl: string }[];
 }
 
+// Ensure cached files exist, fetching from external API if necessary
 export async function ensureCachedFiles() {
   const cached = await getCachedData();
   if (!cached) {
@@ -19,9 +20,11 @@ export async function ensureCachedFiles() {
   }
 }
 
+// Function to fetch data from the external API
 export async function fetchExternalData(): Promise<ExternalApiResponse> {
   try {
     const response = await axios.get<ExternalApiResponse>(EXTERNAL_API_URL);
+    // Save the raw response to a file for debugging purposes
     await fs.writeFile(
       ".data/response.json",
       JSON.stringify(response.data, null, 2),
@@ -33,6 +36,7 @@ export async function fetchExternalData(): Promise<ExternalApiResponse> {
   }
 }
 
+// Function to convert the external API data into a directory structure
 export function serializeExternalData(data: ExternalApiResponse): Dir {
   const rootNodes = new DirList();
 
@@ -53,6 +57,7 @@ export function serializeExternalData(data: ExternalApiResponse): Dir {
   return rootNodes.serialize();
 }
 
+// Function to parse a URL into its components
 function parseUrl(fileUrl: string) {
   const url = new URL(fileUrl);
   const pathSegments = url.pathname.split("/").filter(Boolean);
